@@ -43,3 +43,4 @@ with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
         to_addrs=TO_EMAIL,  # type: ignore
         msg=f"Subject:Motivational Quote\n\n{random_quote}",
     )
+
