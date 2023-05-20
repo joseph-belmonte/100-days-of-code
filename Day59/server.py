@@ -1,5 +1,10 @@
-from flask import Flask, render_template
+import os
+from flask import Flask, render_template, request
+import smtplib
 import requests
+
+to_email = os.environ["EMAIL"]
+password = os.environ["PASSWORD"]
 
 posts = requests.get("https://api.npoint.io/bdc08ef6aa4207b323e6", timeout=5).json()
 
@@ -25,9 +30,26 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/contact")
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html")
+    if request.method == "POST":
+        name = request.form["name"]
+        email = request.form["email"]
+        phone = request.form["phone"]
+        message = request.form["message"]
+
+        with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+            connection.starttls()
+            connection.login(user=to_email, password=password)
+            connection.sendmail(
+                from_addr=email,
+                to_addrs=to_email,
+                msg=f"New 'contact me' message\n\n {name}\n{email}\n{phone}\n\n{message}",
+            )
+        return render_template(
+            "contact.html", message="Successfully submitted your message. Have another?"
+        )
+    return render_template("contact.html", message="Contact me")
 
 
 if __name__ == "__main__":
