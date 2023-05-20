@@ -1,0 +1,4 @@
+Flask==2.1.2
+flask
+itsdangerous==2.0.1
+markupsafe==2.0.1

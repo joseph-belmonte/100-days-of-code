@@ -1,0 +1,51 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1>Login</h1>
+  <!-- This is where our form will go. -->
+  <div class="content-section">
+    <form method="post" action="{{ url_for('login') }}" novalidate>
+      <!-- hidden tag adds CSFR token -->
+      {{ form.hidden_tag() }}
+      {{ form.csrf_token }}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Login Information</legend>
+        <div class="form-group">
+          {{ form.username.label(class="form-control-label") }}
+          {% if form.username.errors %}
+          {{ form.username(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.username.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %}
+          {{ form.username(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <br>
+        <div class="form-group">
+          {{ form.password.label(class="form-control-label") }}
+          {% if form.password.errors %}
+          {{ form.password(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.password.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %}
+          {{ form.password(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+      </fieldset>
+      <div class="form-group">
+        {{ form.submit(class="btn btn-outline-info") }}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
