@@ -1,24 +1,43 @@
 {% extends 'bootstrap/base.html' %}
 
-{% block title %} Library {% endblock %}
-
-
+{% block title %} My Library {% endblock %}
 
 {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-8">
+      <h1>My Library</h1>
+      {% if books == [] %}
+      <p>There aren't any books in the library yet -- let's add one!</p>
+      {% else %}
+      <table class="table .w-auto">
+        <thead>
+          <tr>
+            <th scope="col">Book</th>
+            <th scope="col">Author</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Review</th>
+            <th scope="col">Edit Rating</th>
+            <th scope="col">Delete Record</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for book in books %}:
+          <tr>
+            <th scope="row">{{book["book_name"]}}</th>
+            <td>{{book["book_author"]}}</td>
+            <td>{{book["book_rating"]}}</td>
+            <td>{{book["book_review"]}}</td>
+            <td><a href="{{url_for('edit', book_id=book['id'])}}">✏️</td>
+            <td><a href="{{url_for('delete', book_id=book['id'])}}">🗑️</td>
+          </tr>
+        </tbody>
+        {% endfor %}
+        {% endif %}
+      </table>
+      <a class="btn btn-warning btn-lg" href="{{url_for('add')}}" role="button">Add a Book!</a>
+    </div>
+  </div>
+</div>
 
-<body>
-
-  <h1>My Library</h1>
-
-  {% if not books %}
-  <p>No books in the library yet.</p>
-  {% endif %}
-  <ul>
-    {% for book in books %}
-    <li>{{ book.book_name }} by {{ book.book_author }}, Rating: {{ book.book_rating}}/5</li>
-    {% endfor %}
-  </ul>
-
-  <a href="{{ url_for('add') }}">Add New Book</a>
-</body>
 {% endblock %}

@@ -6,11 +6,21 @@ from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired
 
 
-class BookForm(FlaskForm):
+class NewBookForm(FlaskForm):
     """Creates a book form that can add a new book to the database"""
 
     book_name = StringField("Book Name", validators=[DataRequired()])
     book_author = StringField("Book Author", validators=[DataRequired()])
+    book_rating = SelectField(
+        "Rating", choices=[("1", "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5")]
+    )
+    book_review = StringField("Review", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+
+class EditBookForm(FlaskForm):
+    """Creates a book form that can edit a book in the database"""
+
     book_rating = SelectField(
         "Rating", choices=[("1", "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5")]
     )
